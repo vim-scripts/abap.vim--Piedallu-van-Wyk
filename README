@@ -1,0 +1,8 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1068
+
+An alternate version of SAP ABAP syntax highlighting with:
+
+1. correct ABAP special table/symbol matching
+2. enhanced comprehensive keyword recognition.
+
+Please mail comments and suggestions to:  marius@e.co.za
