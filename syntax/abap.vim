@@ -1,4 +1,4 @@
-" Vim ABAP syntax file Ver: 0.5
+" Vim ABAP syntax file Ver: 0.6
 "    Language:	SAP - ABAP/4
 "  Maintainer:	Marius van Wyk <marius@e.co.za>
 " Last Change:	2004.08.25
@@ -15,7 +15,7 @@ endif
 syn case ignore
 
 " Symbol Operators
-syn match   abapSymbolOperator      "[+\-/=<>]"
+syn match   abapSymbolOperator      "[+\-/=<>$]"
 syn match   abapSymbolOperator      "\*"
 syn match   abapSymbolOperator      "[<>]="
 syn match   abapSymbolOperator      "<>"
@@ -41,8 +41,7 @@ syn keyword abapStatement ADD ADD-CORRESPONDING ASSIGN AT AUTHORITY-CHECK
 syn keyword abapStatement BACK BREAK-POINT
 syn keyword abapStatement CALL CASE CHECK CLEAR CLOSE CNT COLLECT COMMIT COMMUNICATION COMPUTE CONCATENATE CONDENSE CONSTANTS CONTINUE CONTROLS CONVERT CREATE CURRENCY
 syn keyword abapStatement DATA DEFINE DELETE DESCRIBE DETAIL DIVIDE DIVIDE-CORRESPONDING DO
-syn keyword abapStatement EDITOR-CALL ELSE ELSEIF END-OF-DEFINITION END-OF-PAGE END-OF-SELECTION ENDAT ENDCASE ENDDO ENDEXEC ENDFORM ENDFUNCTION ENDIF ENDIFEND ENDLOOP ENDMODULE ENDON ENDPROVIDE ENDSELECT ENDWHILE EXEC EXIT EXPORT EXPORTING EXTRACT
-syn keyword abapStatement EXIT FROM STEP LOOP
+syn keyword abapStatement EDITOR-CALL ELSE ELSEIF END-OF-DEFINITION END-OF-PAGE END-OF-SELECTION ENDAT ENDCASE ENDDO ENDEXEC ENDFORM ENDFUNCTION ENDIF ENDIFEND ENDLOOP ENDMODULE ENDON ENDPROVIDE ENDSELECT ENDWHILE EXEC EXPORT EXPORTING EXTRACT
 syn keyword abapStatement FETCH FIELD-GROUPS FIELD-SYMBOLS FIELDS FORM FORMAT FREE FUNCTION FUNCTION-POOL
 syn keyword abapStatement GENERATE GET
 syn keyword abapStatement HIDE
@@ -55,20 +54,39 @@ syn keyword abapStatement PACK PARAMETERS PERFORM POSITION PRINT-CONTROL PROGRAM
 syn keyword abapStatement RAISE RANGES READ RECEIVE REFRESH REJECT REPLACE REPORT RESERVE RESTORE ROLLBACK
 syn keyword abapStatement SCAN SCROLL SEARCH SELECT SELECT-OPTIONS SELECTION-SCREEN SET SHIFT SKIP SORT SPLIT START-OF-SELECTION STATICS STOP SUBMIT SUBTRACT SUBTRACT-CORRESPONDING SUM SUMMARY SUPPRESS SYNTAX-CHECK SYNTAX-TRACE
 syn keyword abapStatement TABLES TOP-OF-PAGE TRANSFER TRANSLATE TYPE TYPE-POOL TYPE-POOLS TYPES
-syn keyword abapStatement ULINE UNPACK UPDATE
+syn keyword abapStatement UNPACK UPDATE
 syn keyword abapStatement WHEN WHILE WINDOW WRITE 
+
 " More statemets
-syn keyword abapStatement BEGIN END OCCURS STRUCTURE STRUCTURE
-syn keyword abapStatement WITH HEADER LINE CASTING APPEND RAISING
+syn keyword abapStatement OCCURS STRUCTURE OBJECT PROPERTY
+syn keyword abapStatement CASTING APPEND RAISING VALUE
+syn keyword abapStatement LINE-SIZE LINE-COUNT MESSAGE-ID
+syn keyword abapStatement CHANGING EXCEPTIONS
+syn keyword abapStatement ID NUMBER FOR DISPLAY-MODE TITLE
+
+" More multi-word statements
+syn match   abapStatement "\(\W\|^\)\(WITH\W\+\(HEADER\W\+LINE\|FRAME\|KEY\)\|WITH\)\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)NO\W\+STANDARD\W\+PAGE\W\+HEADING\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)\(EXIT\W\+FROM\W\+STEP\W\+LOOP\|EXIT\)\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)\(BEGIN\W\+OF\W\+\(BLOCK\)\|BEGIN\W\+OF\)\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)\(END\W\+OF\W\+\(BLOCK\)\|END\W\+OF\)\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)IS\W\+INITIAL\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)SEPARATED\W\+BY\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)\(USING\W\+\(EDIT\W\+MASK\)\|USING\)\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)\(WHERE\W\+\(LINE\)\)\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)RADIOBUTTON\W\+GROUP\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapStatement "\(\W\|^\)REF\W\+TO\(\W\|$\)"ms=s+1,me=e-1
 
 " Special ABAP specific tables:
-syn match   abapSpecial  "\Wsy-\w\+"ms=s+1
-syn match   abapSpecial  "\W\(p\|pa\)\d\d\d\d\W"ms=s+1,me=e-1
-syn match   abapSpecial  "\W\(p\|pa\)\d\d\d\d-\w\+"ms=s+1
-syn match   abapSpecial  "\Wt\d\d\dt-\w\+"ms=s+1
-syn match   abapSpecial  "\Winnnn\W"ms=s+1,me=e-1
-syn match   abapSpecial  "\Winnnn-\w\+"ms=s+1
-syn keyword abapSpecial  true false null
+syn match   abapSpecial       "\(\W\|^\)\(sy\|\(p\|pa\)\d\d\d\d\|t\d\d\d.\|innnn\)\(\W\|$\)"ms=s+1,me=e-1
+syn match   abapSpecialTables "\(sy\|\(p\|pa\)\d\d\d\d\|t\d\d\d.\|innnn\)-"me=e-1 contained
+syn match   abapSpecial       "\(\W\|^\)\w\+-\w\+"ms=s+1 contains=abapSpecialTables
+
+" Pointer
+syn match   abapSpecial  "<\w\+>"
+
+" Abap constants:
+syn keyword abapSpecial  TRUE FALSE NULL SPACE
 
 " Includes
 syn region abapInclude   start="include" end="." contains=abapComment 
@@ -90,7 +108,7 @@ syn keyword abapOperator lines
 syn keyword abapOperator INTO FROM WHERE GROUP BY HAVING ORDER BY
 syn keyword abapOperator APPENDING CORRESPONDING FIELDS OF TABLE 
 syn keyword abapOperator LEFT RIGHT OUTER INNER JOIN AS CLIENT SPECIFIED BYPASSING BUFFER UP TO ROWS CONNECTING
-syn keyword abapOperator EQ NE LT LE GT GE NOT AND OR IN LIKE BETWEEN
+syn keyword abapOperator EQ NE LT LE GT GE NOT AND OR XOR IN LIKE BETWEEN
 
 " An error? Not strictly... but cannot think of reason this is intended.
 syn match   abapError    "\.\."
@@ -115,6 +133,7 @@ if version >= 508 || !exists("did_abap_syntax_inits")
   HiLink abapComment	      Comment
   HiLink abapInclude	      Include
   HiLink abapSpecial        Special
+  HiLink abapSpecialTables  PreProc
   HiLink abapSymbolOperator	abapOperator
   HiLink abapOperator	      Operator
   HiLink abapStatement	    Statement
